@@ -57,7 +57,7 @@ describe('Property 6: Configuration loading from environment', () => {
           const config = loadConfig(envVars);
 
           // Property: Empty or undefined env vars should result in default values
-          expect(config.apiUrl).toBe('http://localhost:3000');
+          expect(config.apiUrl).toBe('');
           expect(config.hotelName).toBe('Hotel Yorba');
         }
       ),
@@ -99,7 +99,7 @@ describe('Property 6: Configuration loading from environment', () => {
           const config = loadConfig(envVars);
 
           // Property: Set values should be used, missing values should use defaults
-          expect(config.apiUrl).toBe('http://localhost:3000');
+          expect(config.apiUrl).toBe('');
           expect(config.hotelName).toBe(hotelName);
         }
       ),
@@ -124,11 +124,11 @@ describe('Property 7: Configuration defaults', () => {
           const config = loadConfig(envVars);
 
           // Property: Missing env vars should result in sensible defaults
-          expect(config.apiUrl).toBe('http://localhost:3000');
+          expect(config.apiUrl).toBe('');
           expect(config.hotelName).toBe('Hotel Yorba');
           
           // Property: Defaults should be valid values
-          expect(config.apiUrl).toMatch(/^https?:\/\//);
+          expect(config.apiUrl).toMatch(/^(https?:\/\/.*|\/.*|)$/);
           expect(config.hotelName.length).toBeGreaterThan(0);
         }
       ),

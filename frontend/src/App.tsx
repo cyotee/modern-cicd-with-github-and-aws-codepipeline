@@ -14,7 +14,15 @@ function App() {
 
   useEffect(() => {
     let retryCount = 0;
-    const maxRetries = 30; // 30 attempts = ~30 seconds with 1 second delay
+    const maxRetries = 15; // Reduced from 30 to 15 attempts = ~15 seconds
+    
+    // Set a maximum timeout of 20 seconds to show the app regardless
+    const maxTimeout = setTimeout(() => {
+      console.warn('Maximum loading timeout reached. Showing app with default configuration.');
+      setLoadingMessage('Loading complete. Using default configuration.');
+      document.title = `${config.hotelName} - Hotel Management`;
+      setIsBackendReady(true);
+    }, 20000); // 20 seconds max
     
     const checkBackendHealth = async () => {
       setLoadingMessage(`Connecting to backend services... (attempt ${retryCount + 1}/${maxRetries})`);
@@ -22,6 +30,7 @@ function App() {
       const isHealthy = await apiClient.healthCheck();
       
       if (isHealthy) {
+        clearTimeout(maxTimeout); // Cancel the timeout since we're ready
         setLoadingMessage('Backend connected! Loading configuration...');
         
         // Fetch config and update document title
@@ -44,6 +53,7 @@ function App() {
           setTimeout(checkBackendHealth, 1000);
         } else {
           // Max retries reached, show app anyway with default config
+          clearTimeout(maxTimeout); // Cancel the timeout
           console.warn('Backend health check failed after maximum retries. Using default configuration.');
           setLoadingMessage('Could not connect to backend. Using default configuration...');
           document.title = `${config.hotelName} - Hotel Management`;
@@ -55,6 +65,9 @@ function App() {
     };
     
     checkBackendHealth();
+    
+    // Cleanup timeout on unmount
+    return () => clearTimeout(maxTimeout);
   }, []);
 
   if (!isBackendReady) {

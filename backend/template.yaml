@@ -11,7 +11,7 @@ Globals:
     MemorySize: 512
     Runtime: nodejs20.x
     Architectures:
-      - x86_64
+      - !Ref Architecture
     Environment:
       Variables:
         HOTEL_NAME: !Ref HotelName
@@ -36,6 +36,14 @@ Parameters:
       - staging
       - prod
     Description: Environment name for the deployment
+  
+  Architecture:
+    Type: String
+    Default: 'arm64'
+    AllowedValues:
+      - x86_64
+      - arm64
+    Description: Lambda function architecture (x86_64 for Intel/AMD, arm64 for ARM/Graviton)
 
 Resources:
   # DynamoDB Table for storing room data

@@ -6,6 +6,16 @@ export default defineConfig({
   plugins: [react()],
   server: {
     port: 5173,
+    host: '0.0.0.0', // Allow external connections
+    allowedHosts: [
+      'localhost',
+      '127.0.0.1',
+      '.cloudfront.net' // Allow any cloudfront domain
+    ],
+    hmr: {
+      port: 5173,
+      host: 'localhost'
+    },
     proxy: {
       '/api': {
         target: process.env.VITE_API_URL || 'http://localhost:3000',
@@ -16,26 +26,5 @@ export default defineConfig({
   build: {
     outDir: 'dist',
     sourcemap: true,
-  },
-  test: {
-    globals: true,
-    environment: 'jsdom',
-    setupFiles: './src/test/setup.ts',
-    include: ['src/**/*.{test,spec}.{ts,tsx}'],
-    exclude: ['**/node_modules/**', '**/AsanaMCPServer/**'],
-    reporters: ['default', 'junit'],
-    outputFile: {
-      junit: './junit.xml',
-    },
-    coverage: {
-      provider: 'v8',
-      reporter: ['text', 'json', 'html', 'cobertura'],
-      exclude: [
-        'node_modules/',
-        'src/test/',
-        '**/*.test.ts',
-        '**/*.test.tsx',
-      ],
-    },
   },
 });

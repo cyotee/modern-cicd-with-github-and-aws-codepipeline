@@ -26,13 +26,13 @@ export const loadConfig = (envVars: Record<string, string | undefined>): Config 
   };
 
   return {
-    apiUrl: getVar('VITE_API_URL', 'http://localhost:3000'),
+    apiUrl: getVar('VITE_API_URL', ''),
     hotelName: getVar('VITE_HOTEL_NAME', 'Hotel Yorba'),
   };
 };
 
 export const config: Config = {
-  apiUrl: getEnvVar('VITE_API_URL', 'http://localhost:3000'),
+  apiUrl: getEnvVar('VITE_API_URL', ''), // Empty string will use relative URLs with Vite proxy
   hotelName: getEnvVar('VITE_HOTEL_NAME', 'Hotel Yorba'),
 };
 
