@@ -7,19 +7,15 @@ export default defineConfig({
   server: {
     port: 5173,
     host: '0.0.0.0', // Allow external connections
-    allowedHosts: [
-      'localhost',
-      '127.0.0.1',
-      '.cloudfront.net' // Allow any cloudfront domain
-    ],
+    allowedHosts: 'all', // Allow all hosts (CloudFront, localhost, etc.)
     hmr: {
-      port: 5173,
-      host: 'localhost'
+      clientPort: 5173, // Use clientPort for better CloudFront compatibility
     },
     proxy: {
       '/api': {
         target: process.env.VITE_API_URL || 'http://localhost:3000',
         changeOrigin: true,
+        secure: false,
       },
     },
   },
