@@ -126,6 +126,37 @@ npm run dev:frontend
 
 Open your browser to http://localhost:5173 to see the application.
 
+### Workshop Environment Access
+
+If you're running this in the AWS Workshop Studio environment with VS Code Server:
+
+**Access Patterns:**
+
+| Scenario | URL | What You See |
+|----------|-----|--------------|
+| Services stopped | `https://your-cloudfront-url/` | VS Code Server (default) |
+| Services running | `https://your-cloudfront-url/` | Hotel Management App |
+| Explicit VS Code | `https://your-cloudfront-url/vscode` | VS Code Server (always) |
+
+**How It Works:**
+- The Nginx proxy automatically detects if Vite is running on port 5173
+- When Vite is running → root path serves the application
+- When Vite is stopped → root path falls back to VS Code
+- VS Code is always accessible at `/vscode` path
+
+**Quick Start:**
+1. Start services: `npm run setup:local`
+2. Open your CloudFront URL in browser
+3. Application loads automatically at root path
+4. To access VS Code while app runs: add `/vscode` to URL
+
+**Dual Access:**
+You can have both open simultaneously:
+- Tab 1: `https://your-cloudfront-url/` → Application
+- Tab 2: `https://your-cloudfront-url/vscode` → VS Code
+
+For detailed workshop instructions, see the [workshop content documentation](../modern-cicd-with-github-and-aws-codepipeline_workshop_content/content/05-lab0-local-dev/accessing_the_application.en.md).
+
 ## Local Development Setup Details
 
 ### DynamoDB Local

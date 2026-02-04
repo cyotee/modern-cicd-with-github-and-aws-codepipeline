@@ -7,7 +7,7 @@ export default defineConfig({
   server: {
     port: 5173,
     host: '0.0.0.0', // Allow external connections
-    allowedHosts: 'all', // Allow all hosts (CloudFront, localhost, etc.)
+    allowedHosts: true, // Allow all hosts (CloudFront, localhost, etc.)
     hmr: {
       clientPort: 5173, // Use clientPort for better CloudFront compatibility
     },
