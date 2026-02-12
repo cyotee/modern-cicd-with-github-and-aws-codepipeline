@@ -81,7 +81,7 @@ function App() {
 
   return (
     <ErrorBoundary>
-      <Router>
+      <Router basename={import.meta.env.BASE_URL}>
         <MainLayout hotelName={hotelName}>
           <Routes>
             <Route path="/" element={<HomePage />} />

@@ -63,12 +63,26 @@ else
 fi
 echo ""
 
-# Stop DynamoDB Local (Docker) - Port 8000
-echo -e "${YELLOW}Stopping DynamoDB Local (Docker)...${NC}"
-if docker ps | grep -q dynamodb-local; then
-    docker-compose down 2>/dev/null
-    echo -e "${GREEN}✓ DynamoDB Local stopped${NC}"
-else
+# Stop DynamoDB Local (Docker/Finch) - Port 8000
+echo -e "${YELLOW}Stopping DynamoDB Local...${NC}"
+
+CONTAINER_NAME="hotel-app-dynamodb-local"
+STOPPED=false
+
+# Try both runtimes to ensure we catch the container
+for RUNTIME in finch docker; do
+    if command -v $RUNTIME &> /dev/null; then
+        if $RUNTIME ps --filter "name=${CONTAINER_NAME}" --format "{{.Names}}" 2>/dev/null | grep -q "${CONTAINER_NAME}"; then
+            $RUNTIME stop ${CONTAINER_NAME} 2>/dev/null
+            $RUNTIME rm ${CONTAINER_NAME} 2>/dev/null
+            echo -e "${GREEN}✓ DynamoDB Local stopped (using ${RUNTIME})${NC}"
+            STOPPED=true
+            break
+        fi
+    fi
+done
+
+if [ "$STOPPED" = false ]; then
     echo -e "${GREEN}✓ DynamoDB Local is not running${NC}"
 fi
 echo ""

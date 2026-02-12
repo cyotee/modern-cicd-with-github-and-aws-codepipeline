@@ -17,9 +17,35 @@ const client = new DynamoDBClient({
 });
 
 const TABLE_NAME = 'Rooms-local';
+const MAX_RETRIES = 10;
+const RETRY_DELAY = 1000; // 1 second
+
+async function waitForDynamoDB() {
+  for (let i = 0; i < MAX_RETRIES; i++) {
+    try {
+      const listCommand = new ListTablesCommand({});
+      await client.send(listCommand);
+      return true;
+    } catch (error) {
+      if (i < MAX_RETRIES - 1) {
+        console.log(`⏳ Waiting for DynamoDB Local to be ready... (${i + 1}/${MAX_RETRIES})`);
+        await new Promise(resolve => setTimeout(resolve, RETRY_DELAY));
+      }
+    }
+  }
+  return false;
+}
 
 async function setupTable() {
   try {
+    // Wait for DynamoDB to be ready
+    const isReady = await waitForDynamoDB();
+    if (!isReady) {
+      throw new Error('DynamoDB Local did not become ready in time');
+    }
+    
+    console.log('✓ Connected to DynamoDB Local');
+    
     // Check if table already exists
     const listCommand = new ListTablesCommand({});
     const listResponse = await client.send(listCommand);

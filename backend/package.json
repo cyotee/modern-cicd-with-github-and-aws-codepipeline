@@ -4,7 +4,7 @@
   "private": true,
   "description": "Lambda backend for hotel management application",
   "scripts": {
-    "dev": "npm run build && ARCH=$(node scripts/detect-architecture.js) && sam local start-api --docker-network hotel-app-network --port 3000 --env-vars env.json --parameter-overrides \"Environment=local HotelName=AWS Hotel Architecture=$ARCH\"",
+    "dev": "node scripts/generate-env-json.js && npm run build && ARCH=$(node scripts/detect-architecture.js) && sam local start-api --docker-network hotel-app-network --port 3000 --env-vars env.json --parameter-overrides \"Environment=local HotelName=AWS Hotel Architecture=$ARCH\"",
     "dev:watch": "npm run build && sam local start-api --config-env local --docker-network hotel-app-network --port 3000 --warm-containers EAGER",
     "build": "tsc",
     "build:watch": "tsc --watch",

@@ -6,7 +6,8 @@
   "description": "React frontend for hotel management application",
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build",
+    "build": "tsc && vite build --base=/",
+    "build:workshop": "tsc && vite build --base=/app/",
     "preview": "vite preview",
     "test": "vitest --run",
     "test:watch": "vitest",

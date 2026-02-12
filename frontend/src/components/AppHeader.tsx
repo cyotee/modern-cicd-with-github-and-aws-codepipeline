@@ -14,7 +14,7 @@ export const AppHeader: React.FC<AppHeaderProps> = ({ hotelName }) => {
       </div>
       <div style={{ flexShrink: 0 }}>
         <img 
-          src="/hotel_landing_pic.png" 
+          src={`${import.meta.env.BASE_URL}hotel_landing_pic.png`}
           alt="Hotel" 
           style={{ 
             height: '80px',

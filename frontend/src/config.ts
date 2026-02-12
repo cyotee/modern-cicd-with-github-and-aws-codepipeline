@@ -26,13 +26,13 @@ export const loadConfig = (envVars: Record<string, string | undefined>): Config 
   };
 
   return {
-    apiUrl: getVar('VITE_API_URL', ''),
+    apiUrl: getVar('VITE_API_URL', '/api'),
     hotelName: getVar('VITE_HOTEL_NAME', 'Hotel Yorba'),
   };
 };
 
 export const config: Config = {
-  apiUrl: getEnvVar('VITE_API_URL', ''), // Empty string will use relative URLs with Vite proxy
+  apiUrl: getEnvVar('VITE_API_URL', ''), // Use absolute path to nginx /api/ location
   hotelName: getEnvVar('VITE_HOTEL_NAME', 'Hotel Yorba'),
 };
 
