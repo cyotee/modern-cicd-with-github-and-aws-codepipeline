@@ -1,7 +1,6 @@
 #!/bin/bash
 
-# Script to start DynamoDB Local using either Docker or Finch
-# Automatically detects which container runtime is available
+# Script to start DynamoDB Local using Docker
 
 set -e
 
@@ -82,29 +81,13 @@ start_dynamodb() {
 # Detect container runtime
 echo -e "${YELLOW}🔍 Detecting container runtime...${NC}"
 
-# Check if user specified a preference via environment variable
-if [ -n "$CONTAINER_RUNTIME" ]; then
-    if [ "$CONTAINER_RUNTIME" = "docker" ] && command -v docker &> /dev/null; then
-        echo -e "${GREEN}✓ Using Docker (user preference)${NC}"
-        RUNTIME="docker"
-    elif [ "$CONTAINER_RUNTIME" = "finch" ] && command -v finch &> /dev/null; then
-        echo -e "${GREEN}✓ Using Finch (user preference)${NC}"
-        RUNTIME="finch"
-    else
-        echo -e "${RED}❌ Error: Specified runtime '$CONTAINER_RUNTIME' not found${NC}"
-        exit 1
-    fi
-# Auto-detect: prefer Finch if available
-elif command -v finch &> /dev/null; then
-    echo -e "${GREEN}✓ Found Finch (auto-detected)${NC}"
-    RUNTIME="finch"
-elif command -v docker &> /dev/null; then
-    echo -e "${GREEN}✓ Found Docker (auto-detected)${NC}"
+# Use Docker
+if command -v docker &> /dev/null; then
+    echo -e "${GREEN}✓ Found Docker${NC}"
     RUNTIME="docker"
 else
-    echo -e "${RED}❌ Error: Neither Docker nor Finch is installed${NC}"
-    echo -e "${YELLOW}Please install either Docker or Finch to run DynamoDB Local${NC}"
-    echo -e "${YELLOW}Finch: https://github.com/runfinch/finch${NC}"
+    echo -e "${RED}❌ Error: Docker is not installed${NC}"
+    echo -e "${YELLOW}Please install Docker to run DynamoDB Local${NC}"
     echo -e "${YELLOW}Docker: https://www.docker.com/get-started${NC}"
     exit 1
 fi

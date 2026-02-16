@@ -33,11 +33,10 @@ try {
   usingFinch = os.platform() === 'darwin';
 }
 
-// Finch on macOS and potentially Linux needs host.docker.internal
-// Docker with docker-compose uses container name resolution
+// Docker uses container name resolution
 const dynamodbEndpoint = usingFinch
   ? 'http://host.docker.internal:8000'
-  : 'http://dynamodb-local:8000';
+  : 'http://hotel-app-dynamodb-local:8000';
 
 const envConfig = {
   ApiFunction: {
