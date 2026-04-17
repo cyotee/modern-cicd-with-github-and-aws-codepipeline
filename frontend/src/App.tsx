@@ -5,7 +5,7 @@ import { LoadingScreen } from './components/LoadingScreen';
 import { MainLayout } from './layouts/MainLayout';
 import { HomePage } from './pages/HomePage';
 import { apiClient } from './services/api';
-import config from './config';
+import config, { hasExplicitHotelNameOverride } from './config';
 
 function App() {
   const [hotelName, setHotelName] = useState(config.hotelName);
@@ -36,8 +36,9 @@ function App() {
         // Fetch config and update document title
         try {
           const appConfig = await apiClient.getConfig();
-          setHotelName(appConfig.hotelName);
-          document.title = `${appConfig.hotelName} - Hotel Management`;
+          const resolvedHotelName = hasExplicitHotelNameOverride ? config.hotelName : appConfig.hotelName;
+          setHotelName(resolvedHotelName);
+          document.title = `${resolvedHotelName} - Hotel Management`;
         } catch (err) {
           console.error('Failed to fetch config:', err);
           // Use default hotel name

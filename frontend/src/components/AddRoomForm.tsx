@@ -67,9 +67,7 @@ export const AddRoomForm: React.FC<AddRoomFormProps> = ({ onSubmit }) => {
     return isValid;
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
+  const handleSubmit = async () => {
     if (!validateForm()) {
       return;
     }
@@ -117,7 +115,12 @@ export const AddRoomForm: React.FC<AddRoomFormProps> = ({ onSubmit }) => {
 
   return (
     <Container header={<Header variant="h2">Add New Room</Header>}>
-      <form onSubmit={handleSubmit}>
+      <form
+        onSubmit={(event) => {
+          event.preventDefault();
+          void handleSubmit();
+        }}
+      >
         <Form
           actions={
             <SpaceBetween direction="horizontal" size="xs">
@@ -125,7 +128,9 @@ export const AddRoomForm: React.FC<AddRoomFormProps> = ({ onSubmit }) => {
                 variant="primary"
                 loading={loading}
                 disabled={loading}
-                onClick={handleSubmit}
+                onClick={() => {
+                  void handleSubmit();
+                }}
               >
                 Add Room
               </Button>

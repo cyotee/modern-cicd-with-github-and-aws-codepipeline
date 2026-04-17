@@ -6,7 +6,7 @@ import { RoomList } from '../components/RoomList';
 import { AddRoomForm } from '../components/AddRoomForm';
 import { apiClient } from '../services/api';
 import { Room, NewRoom, UpdateRoom } from '../types/room';
-import config from '../config';
+import config, { hasExplicitHotelNameOverride } from '../config';
 
 export const HomePage: React.FC = () => {
   const [rooms, setRooms] = useState<Room[]>([]);
@@ -30,7 +30,7 @@ export const HomePage: React.FC = () => {
   const fetchConfig = async () => {
     try {
       const appConfig = await apiClient.getConfig();
-      setHotelName(appConfig.hotelName);
+      setHotelName(hasExplicitHotelNameOverride ? config.hotelName : appConfig.hotelName);
     } catch (err) {
       console.error('Failed to fetch config:', err);
       // Use default hotel name from config

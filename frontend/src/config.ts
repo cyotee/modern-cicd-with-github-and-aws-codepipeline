@@ -3,6 +3,9 @@ interface Config {
   hotelName: string;
 }
 
+export const hasExplicitHotelNameOverride =
+  import.meta.env.VITE_HOTEL_NAME !== undefined && import.meta.env.VITE_HOTEL_NAME !== '';
+
 /**
  * Get environment variable with fallback to default value
  * @param key - Environment variable key
@@ -26,7 +29,7 @@ export const loadConfig = (envVars: Record<string, string | undefined>): Config 
   };
 
   return {
-    apiUrl: getVar('VITE_API_URL', '/api'),
+    apiUrl: getVar('VITE_API_URL', ''),
     hotelName: getVar('VITE_HOTEL_NAME', 'Hotel Yorba'),
   };
 };

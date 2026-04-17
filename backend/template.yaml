@@ -19,7 +19,6 @@ Globals:
         AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1'
         # Local development overrides (will be overridden by env.json)
         DYNAMODB_ENDPOINT: ''
-        AWS_REGION: 'us-west-2'
 
 Parameters:
   HotelName:
@@ -74,13 +73,6 @@ Resources:
       Description: Hotel Management API
       EndpointConfiguration:
         Type: REGIONAL
-      TracingEnabled: true
-      MethodSettings:
-        - ResourcePath: '/*'
-          HttpMethod: '*'
-          LoggingLevel: INFO
-          DataTraceEnabled: true
-          MetricsEnabled: true
       Cors:
         AllowMethods: "'GET,POST,PUT,DELETE,OPTIONS'"
         AllowHeaders: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"

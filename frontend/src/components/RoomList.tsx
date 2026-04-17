@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import Table from '@cloudscape-design/components/table';
+import Table, { TableProps } from '@cloudscape-design/components/table';
 import Box from '@cloudscape-design/components/box';
 import SpaceBetween from '@cloudscape-design/components/space-between';
 import Header from '@cloudscape-design/components/header';
@@ -23,7 +23,7 @@ export const RoomList: React.FC<RoomListProps> = ({
   onDelete,
   onUpdate,
 }) => {
-  const [sortingColumn, setSortingColumn] = useState<{ sortingField: string } | undefined>();
+  const [sortingColumn, setSortingColumn] = useState<TableProps.SortingColumn<Room> | undefined>();
   const [isDescending, setIsDescending] = useState(false);
   const [deletingId, setDeletingId] = useState<number | null>(null);
   const [editingRoom, setEditingRoom] = useState<Room | null>(null);
@@ -74,7 +74,7 @@ export const RoomList: React.FC<RoomListProps> = ({
 
   // Sort rooms
   const sortedRooms = [...filteredRooms].sort((a, b) => {
-    if (!sortingColumn) return 0;
+    if (!sortingColumn?.sortingField) return 0;
 
     const field = sortingColumn.sortingField as keyof Room;
     const aValue = a[field];
