@@ -219,7 +219,7 @@ Resources:
                 ConnectionArn: !Ref GitHubConnectionArn
                 FullRepositoryId: !Ref GitHubRepo
                 BranchName: !Ref GitHubBranch
-                DetectChanges: false
+                DetectChanges: true
                 OutputArtifactFormat: CODE_ZIP
               OutputArtifacts:
                 - Name: SourceOutput
