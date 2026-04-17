@@ -354,7 +354,7 @@ export class BaseInfraStack extends cdk.Stack {
     this.codeBuildFrontEndRole.addToPolicy(
       new iam.PolicyStatement({
         effect: iam.Effect.ALLOW,
-        actions: ['ssm:PutParameter', 'ssm:GetParameter', 'ssm:AddTagsToResource', 'ssm:RemoveTagsFromResource'],
+        actions: ['ssm:PutParameter', 'ssm:GetParameter', 'ssm:GetParameters', 'ssm:AddTagsToResource', 'ssm:RemoveTagsFromResource'],
         resources: [`arn:aws:ssm:${this.region}:${this.account}:parameter/hotelapp/*`],
       })
     );

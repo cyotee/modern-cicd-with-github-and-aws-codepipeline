@@ -52,12 +52,12 @@ Resources:
                 nodejs: 18
               commands:
                 - echo "Installing dependencies..."
-                - cd frontend
                 - npm ci
             pre_build:
               commands:
+                - cd frontend
                 - echo "Running tests..."
-                - npm run test:coverage
+                - "npm run test:coverage"
           reports:
             frontend-test-results:
               files:
@@ -98,7 +98,7 @@ Resources:
         PrivilegedMode: false
         EnvironmentVariables:
           - Name: VITE_API_URL
-            Value: !Sub '{{resolve:ssm:/hotelapp/api/url:1}}'
+            Value: /hotelapp/api/url
             Type: PARAMETER_STORE
       Source:
         Type: CODEPIPELINE
@@ -110,10 +110,10 @@ Resources:
                 nodejs: 18
               commands:
                 - echo "Installing dependencies..."
-                - cd frontend
                 - npm ci
             build:
               commands:
+                - cd frontend
                 - echo "Building React application..."
                 - npm run build
                 - echo "Build completed successfully"
@@ -170,13 +170,13 @@ Resources:
             build:
               commands:
                 - echo "Deploying to S3..."
-                - aws s3 sync . s3://${FRONTEND_BUCKET}/ --delete --cache-control "public, max-age=31536000, immutable" --exclude "index.html"
-                - aws s3 cp index.html s3://${FRONTEND_BUCKET}/index.html --cache-control "public, max-age=0, must-revalidate"
+                - "aws s3 sync . s3://${FRONTEND_BUCKET}/ --delete --cache-control 'public, max-age=31536000, immutable' --exclude 'index.html'"
+                - "aws s3 cp index.html s3://${FRONTEND_BUCKET}/index.html --cache-control 'public, max-age=0, must-revalidate'"
                 - echo "Creating CloudFront invalidation..."
-                - INVALIDATION_ID=$(aws cloudfront create-invalidation --distribution-id ${CLOUDFRONT_DISTRIBUTION_ID} --paths "/*" --query 'Invalidation.Id' --output text)
-                - echo "Invalidation created with ID: ${INVALIDATION_ID}"
+                - "INVALIDATION_ID=$(aws cloudfront create-invalidation --distribution-id ${CLOUDFRONT_DISTRIBUTION_ID} --paths '/*' --query 'Invalidation.Id' --output text)"
+                - "echo Invalidation created with ID: ${INVALIDATION_ID}"
                 - echo "Waiting for invalidation to complete..."
-                - aws cloudfront wait invalidation-completed --distribution-id ${CLOUDFRONT_DISTRIBUTION_ID} --id ${INVALIDATION_ID}
+                - "aws cloudfront wait invalidation-completed --distribution-id ${CLOUDFRONT_DISTRIBUTION_ID} --id ${INVALIDATION_ID}"
                 - echo "Deployment completed successfully"
       Tags:
         - Key: Purpose
